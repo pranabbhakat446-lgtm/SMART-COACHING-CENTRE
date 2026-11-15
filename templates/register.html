@@ -1,0 +1,76 @@
+
+{% extends "base.html" %}
+
+{% block title %}Student Enrollment | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">JOIN OUR CENTRE</span>
+    <h1>Student Enrollment</h1>
+    <p>Complete the form below to register with Smart Coaching Centre.</p>
+</section>
+
+<section class="form-section">
+    <div class="form-card">
+        <div class="form-heading">
+            <div class="form-icon">📝</div>
+            <h2>Student Registration Form</h2>
+            <p>Please provide your correct details.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('register') }}">
+
+            <div class="form-group">
+                <label>Student Full Name *</label>
+                <input type="text" name="name"
+                       placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Last Qualification *</label>
+                <select name="qualification" required>
+                    <option value="">Select qualification</option>
+                    <option>Class 8</option>
+                    <option>Class 9</option>
+                    <option>Class 10</option>
+                    <option>Class 11</option>
+                    <option>Class 12</option>
+                    <option>Diploma</option>
+                    <option>Graduation</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Currently Taking Coaching For *</label>
+                <select name="coaching_for" required>
+                    <option value="">Select course or purpose</option>
+                    <option>School Tuition</option>
+                    <option>Mathematics</option>
+                    <option>Science</option>
+                    <option>English</option>
+                    <option>Computer Education</option>
+                    <option>Competitive Examination</option>
+                    <option>Career Preparation</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" name="phone"
+                       placeholder="Enter mobile number"
+                       maxlength="15">
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit">
+                Submit Enrollment →
+            </button>
+
+            <p class="form-note">* Required fields</p>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

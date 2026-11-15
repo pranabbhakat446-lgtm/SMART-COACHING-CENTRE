@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+
+{% block title %}About Us | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">KNOW ABOUT US</span>
+    <h1>About Smart Coaching Centre</h1>
+    <p>Building knowledge, confidence and a brighter future.</p>
+</section>
+
+<section class="about-section">
+    <div class="about-content">
+        <span class="section-tag">WHO WE ARE</span>
+        <h2>Education With The Right Direction</h2>
+
+        <p>
+            Smart Coaching Centre is dedicated to helping students improve
+            their knowledge, develop confidence and achieve their academic goals.
+        </p>
+
+        <p>
+            We believe that every student has the ability to succeed.
+            With proper education, personal attention and career guidance,
+            students can build a better future.
+        </p>
+
+        <a href="{{ url_for('register') }}" class="btn btn-primary">
+            Join Our Centre →
+        </a>
+    </div>
+
+    <div class="about-card">
+        <div class="about-symbol">🎓</div>
+        <h3>Our Mission</h3>
+        <p>To provide quality education and meaningful guidance to every student.</p>
+        <div class="about-divider"></div>
+        <h3>Our Vision</h3>
+        <p>To help students become confident, skilled and successful individuals.</p>
+    </div>
+</section>
+
+<section class="section values-section">
+    <div class="section-heading">
+        <span class="section-tag">OUR VALUES</span>
+        <h2>What We Believe In</h2>
+    </div>
+
+    <div class="service-grid">
+        <div class="service-card">
+            <div class="service-icon">📖</div>
+            <h3>Learning</h3>
+            <p>Continuous learning and improvement.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">🤝</div>
+            <h3>Support</h3>
+            <p>Understanding and supporting every student.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">⭐</div>
+            <h3>Discipline</h3>
+            <p>Building good habits and responsibility.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">🚀</div>
+            <h3>Success</h3>
+            <p>Helping students move towards their goals.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

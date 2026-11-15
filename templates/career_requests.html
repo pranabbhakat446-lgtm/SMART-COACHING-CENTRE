@@ -1,0 +1,89 @@
+
+{% extends "base.html" %}
+
+{% block title %}Career Requests | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">STUDENT SUPPORT</span>
+    <h1>Career Guidance Requests</h1>
+    <p>Read students' career questions and provide guidance.</p>
+</section>
+
+<section class="dashboard-section">
+
+    {% for item in requests_list %}
+    <div class="request-card">
+
+        <div class="request-header">
+            <div>
+                <h3>{{ item.student_name }}</h3>
+                <span class="request-date">{{ item.created_at }}</span>
+            </div>
+            <span class="status-badge">{{ item.status }}</span>
+        </div>
+
+        <div class="request-info">
+            <strong>Contact:</strong>
+            {{ item.contact or 'Not Provided' }}
+        </div>
+
+        <div class="request-question">
+            <strong>Student's Question</strong>
+            <p>{{ item.question }}</p>
+        </div>
+
+        <div class="request-answer">
+            <strong>Previous Admin Reply</strong>
+            <p>{{ item.response or 'No reply submitted yet.' }}</p>
+        </div>
+
+        <form method="POST"
+              action="{{ url_for('reply_career', request_id=item.id) }}"
+              class="admin-reply-form">
+
+            <div class="form-group">
+                <label>Update Status</label>
+                <select name="status" required>
+                    <option value="Pending"
+                        {% if item.status == 'Pending' %}selected{% endif %}>
+                        Pending
+                    </option>
+                    <option value="In Progress"
+                        {% if item.status == 'In Progress' %}selected{% endif %}>
+                        In Progress
+                    </option>
+                    <option value="Solved"
+                        {% if item.status == 'Solved' %}selected{% endif %}>
+                        Solved
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Your Reply</label>
+                <textarea name="response"
+                    placeholder="Write career guidance reply here...">{{ item.response or '' }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Save Reply
+            </button>
+        </form>
+
+    </div>
+    {% else %}
+    <div class="empty-card">
+        <h3>No Career Requests Yet</h3>
+        <p>New student questions will appear here.</p>
+    </div>
+    {% endfor %}
+
+    <a href="{{ url_for('dashboard') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</section>
+
+{% endblock %}

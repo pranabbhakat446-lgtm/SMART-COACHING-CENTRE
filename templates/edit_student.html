@@ -1,0 +1,75 @@
+
+{% extends "base.html" %}
+
+{% block title %}Edit Student | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">UPDATE RECORD</span>
+    <h1>Edit Student Details</h1>
+    <p>Update the student's information below.</p>
+</section>
+
+<section class="form-section">
+    <div class="form-card">
+
+        <div class="form-heading">
+            <div class="form-icon">✏️</div>
+            <h2>Update Information</h2>
+            <p>Student ID: <strong>{{ student.student_code }}</strong></p>
+        </div>
+
+        <form method="POST"
+              action="{{ url_for('edit_student', student_id=student.id) }}">
+
+            <div class="form-group">
+                <label>Student Name *</label>
+                <input type="text" name="name"
+                       value="{{ student.name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Qualification *</label>
+                <select name="qualification" required>
+                    {% for item in ['Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12', 'Diploma', 'Graduation', 'Other'] %}
+                    <option value="{{ item }}"
+                        {% if student.qualification == item %}selected{% endif %}>
+                        {{ item }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Coaching For *</label>
+                <select name="coaching_for" required>
+                    {% for item in ['School Tuition', 'Mathematics', 'Science', 'English', 'Computer Education', 'Competitive Examination', 'Career Preparation', 'Other'] %}
+                    <option value="{{ item }}"
+                        {% if student.coaching_for == item %}selected{% endif %}>
+                        {{ item }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel" name="phone"
+                       value="{{ student.phone or '' }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit">
+                Save Changes →
+            </button>
+
+            <a href="{{ url_for('student_details', student_id=student.id) }}"
+               class="back-link">
+                Cancel
+            </a>
+
+        </form>
+    </div>
+</section>
+
+{% endblock %}

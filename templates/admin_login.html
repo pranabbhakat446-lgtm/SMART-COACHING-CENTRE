@@ -1,0 +1,45 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Login | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">ADMINISTRATION</span>
+    <h1>Admin Login</h1>
+    <p>Login to manage students and coaching centre activities.</p>
+</section>
+
+<section class="form-section">
+    <div class="form-card">
+        <div class="form-heading">
+            <div class="form-icon">🔐</div>
+            <h2>Welcome Back</h2>
+            <p>Enter your admin login details.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('admin_login') }}">
+
+            <div class="form-group">
+                <label>Username *</label>
+                <input type="text" name="username"
+                       placeholder="Enter admin username" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password *</label>
+                <input type="password" name="password"
+                       placeholder="Enter admin password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit">
+                Login to Dashboard →
+            </button>
+        </form>
+
+        <p class="form-note">This area is only for authorised administrators.</p>
+    </div>
+</section>
+
+{% endblock %}

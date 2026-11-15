@@ -1,0 +1,65 @@
+
+{% extends "base.html" %}
+
+{% block title %}Problem Box | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">WE ARE HERE TO HELP</span>
+    <h1>Student Problem Box</h1>
+    <p>Share your problem with us. We will try our best to help you.</p>
+</section>
+
+<section class="form-section">
+    <div class="form-card">
+        <div class="form-heading">
+            <div class="form-icon">💬</div>
+            <h2>Submit Your Problem</h2>
+            <p>Tell us about your issue so we can support you.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('problem') }}">
+
+            <div class="form-group">
+                <label>Student Name *</label>
+                <input type="text" name="student_name"
+                       placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Student ID (Optional)</label>
+                <input type="text" name="student_code"
+                       placeholder="Example: 01">
+            </div>
+
+            <div class="form-group">
+                <label>Problem Category *</label>
+                <select name="category" required>
+                    <option value="">Select a category</option>
+                    <option>Study Related</option>
+                    <option>Teacher Related</option>
+                    <option>Classroom Related</option>
+                    <option>Fees Related</option>
+                    <option>Personal Problem</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Describe Your Problem *</label>
+                <textarea name="message"
+                          placeholder="Write your problem here..."
+                          required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit">
+                Submit Problem →
+            </button>
+
+            <p class="form-note">* Required fields</p>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

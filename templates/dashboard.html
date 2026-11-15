@@ -1,0 +1,60 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">ADMIN PANEL</span>
+    <h1>Welcome, {{ session.get('admin_username') }}</h1>
+    <p>Manage students, career questions and student problems.</p>
+</section>
+
+<section class="dashboard-section">
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+            <div class="dashboard-icon">🎓</div>
+            <h3>Total Students</h3>
+            <strong>{{ total_students }}</strong>
+            <a href="{{ url_for('students') }}">Manage Students →</a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-icon">🎯</div>
+            <h3>Career Questions</h3>
+            <strong>{{ total_career }}</strong>
+            <a href="{{ url_for('career_requests') }}">View Questions →</a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-icon">💬</div>
+            <h3>Total Problems</h3>
+            <strong>{{ total_problems }}</strong>
+            <a href="{{ url_for('problems') }}">Manage Problems →</a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-icon">⏳</div>
+            <h3>Pending Problems</h3>
+            <strong>{{ pending_problems }}</strong>
+            <a href="{{ url_for('problems') }}">Check Pending →</a>
+        </div>
+
+    </div>
+
+    <div class="dashboard-actions">
+        <h2>Quick Actions</h2>
+
+        <div class="action-links">
+            <a href="{{ url_for('students') }}">View All Students</a>
+            <a href="{{ url_for('career_requests') }}">Career Requests</a>
+            <a href="{{ url_for('problems') }}">Student Problems</a>
+            <a href="{{ url_for('contact_messages') }}">Contact Messages</a>
+            <a href="{{ url_for('admin_logout') }}">Logout</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

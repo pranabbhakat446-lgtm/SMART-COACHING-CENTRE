@@ -1,0 +1,86 @@
+
+{% extends "base.html" %}
+
+{% block title %}Student Problems | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">STUDENT SUPPORT SYSTEM</span>
+    <h1>Student Problems</h1>
+    <p>View, manage and solve problems submitted by students.</p>
+</section>
+
+<section class="dashboard-section">
+
+    {% for item in problems %}
+    <div class="request-card">
+
+        <div class="request-header">
+            <div>
+                <h3>{{ item.student_name }}</h3>
+                <span class="request-date">
+                    Student ID: {{ item.student_code or 'Not Provided' }}
+                    | {{ item.created_at }}
+                </span>
+            </div>
+            <span class="status-badge">{{ item.status }}</span>
+        </div>
+
+        <div class="request-info">
+            <strong>Category:</strong> {{ item.category }}
+        </div>
+
+        <div class="request-question">
+            <strong>Student's Problem</strong>
+            <p>{{ item.message }}</p>
+        </div>
+
+        <form method="POST"
+              action="{{ url_for('update_problem', problem_id=item.id) }}"
+              class="admin-reply-form">
+
+            <div class="form-group">
+                <label>Update Status</label>
+                <select name="status" required>
+                    <option value="Pending"
+                        {% if item.status == 'Pending' %}selected{% endif %}>
+                        Pending
+                    </option>
+                    <option value="In Progress"
+                        {% if item.status == 'In Progress' %}selected{% endif %}>
+                        In Progress
+                    </option>
+                    <option value="Solved"
+                        {% if item.status == 'Solved' %}selected{% endif %}>
+                        Solved
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Admin Reply</label>
+                <textarea name="admin_reply"
+                    placeholder="Write your reply here...">{{ item.admin_reply or '' }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Save Update
+            </button>
+        </form>
+
+    </div>
+    {% else %}
+    <div class="empty-card">
+        <h3>No Problems Submitted</h3>
+        <p>Student problems will appear here.</p>
+    </div>
+    {% endfor %}
+
+    <a href="{{ url_for('dashboard') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</section>
+
+{% endblock %}

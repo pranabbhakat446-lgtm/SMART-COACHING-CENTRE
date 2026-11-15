@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+
+{% block title %}Manage Students | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">STUDENT MANAGEMENT</span>
+    <h1>All Students</h1>
+    <p>Search and manage registered student records.</p>
+</section>
+
+<section class="dashboard-section">
+
+    <div class="student-toolbar">
+        <form method="GET" action="{{ url_for('students') }}" class="search-form">
+            <input type="text" name="search"
+                   value="{{ search }}"
+                   placeholder="Search by student name or ID...">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Qualification</th>
+                    <th>Coaching For</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td><strong>{{ student.student_code }}</strong></td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.qualification }}</td>
+                    <td>{{ student.coaching_for }}</td>
+                    <td>
+                        <a class="view-link"
+                           href="{{ url_for('student_details', student_id=student.id) }}">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="empty-message">
+                        No students found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+
+{% extends "base.html" %}
+
+{% block title %}Home | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="hero-tag">WELCOME TO SMART COACHING CENTRE</span>
+
+        <h1>Build Your Future<br>
+            <span>With The Right Guidance</span>
+        </h1>
+
+        <p>
+            Quality Education, Personal Guidance and Better Career Opportunities.
+            Start your learning journey with us today.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="{{ url_for('register') }}" class="btn btn-primary">
+                Enroll Now <span>→</span>
+            </a>
+
+            <a href="{{ url_for('about') }}" class="btn btn-outline">
+                Explore More
+            </a>
+        </div>
+
+        <div class="hero-trust">
+            <div>
+                <strong>Learn</strong>
+                <span>With Confidence</span>
+            </div>
+            <div>
+                <strong>Grow</strong>
+                <span>With Guidance</span>
+            </div>
+            <div>
+                <strong>Succeed</strong>
+                <span>With Hard Work</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-card">
+        <div class="hero-card-icon">🎓</div>
+        <h2>Your Success Starts Here</h2>
+        <p>Every student has potential. We help you discover it.</p>
+        <div class="hero-card-line"></div>
+        <span>EDUCATION • GUIDANCE • SUCCESS</span>
+    </div>
+</section>
+
+<section class="section services-section">
+    <div class="section-heading">
+        <span class="section-tag">WHAT WE OFFER</span>
+        <h2>Explore Our Services</h2>
+        <p>We support students in education, career planning and personal growth.</p>
+    </div>
+
+    <div class="service-grid">
+        <div class="service-card">
+            <div class="service-icon">📚</div>
+            <h3>Quality Education</h3>
+            <p>Learn with proper guidance and a student-focused approach.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">🎯</div>
+            <h3>Career Guidance</h3>
+            <p>Ask your career questions and get guidance for your future.</p>
+            <a href="{{ url_for('career') }}">Ask a Question →</a>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">💡</div>
+            <h3>Student Support</h3>
+            <p>Share your problems and let us help you find a solution.</p>
+            <a href="{{ url_for('problem') }}">Submit a Problem →</a>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">📝</div>
+            <h3>Student Enrollment</h3>
+            <p>Register with us and receive your unique student ID.</p>
+            <a href="{{ url_for('register') }}">Enroll Now →</a>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div>
+        <span class="section-tag">TAKE THE FIRST STEP</span>
+        <h2>Ready to Start Your Journey?</h2>
+        <p>Join Smart Coaching Centre and move towards a brighter future.</p>
+    </div>
+    <a href="{{ url_for('register') }}" class="btn btn-light">
+        Register Now →
+    </a>
+</section>
+
+{% endblock %}

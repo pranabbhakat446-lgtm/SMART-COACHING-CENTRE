@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+
+{% block title %}Registration Successful | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="success-section">
+    <div class="success-card">
+
+        <div class="success-icon">✓</div>
+
+        <span class="section-tag">REGISTRATION COMPLETED</span>
+
+        <h1>Congratulations!</h1>
+
+        <p class="success-message">
+            Dear <strong>{{ student_name }}</strong>, your enrollment
+            at Smart Coaching Centre has been completed successfully.
+        </p>
+
+        <div class="student-id-box">
+            <span>Your Student ID</span>
+            <strong>{{ student_code }}</strong>
+            <small>Please save this ID for future reference.</small>
+        </div>
+
+        <p class="success-thanks">
+            Thank you for joining Smart Coaching Centre.
+            We wish you success in your learning journey!
+        </p>
+
+        <a href="{{ url_for('home') }}" class="btn btn-primary">
+            Back to Home →
+        </a>
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+
+{% extends "base.html" %}
+
+{% block title %}Contact Us | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">GET IN TOUCH</span>
+    <h1>Contact Us</h1>
+    <p>We are always ready to help students and parents.</p>
+</section>
+
+<section class="form-section">
+    <div class="form-card">
+        <div class="form-heading">
+            <div class="form-icon">📞</div>
+            <h2>Send Us a Message</h2>
+            <p>Have a question? Send us your message.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('contact') }}">
+            <div class="form-group">
+                <label>Your Name *</label>
+                <input type="text" name="name"
+                       placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number *</label>
+                <input type="tel" name="phone"
+                       placeholder="Enter your mobile number" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email (Optional)</label>
+                <input type="email" name="email"
+                       placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label>Your Message *</label>
+                <textarea name="message"
+                          placeholder="Write your message here..."
+                          required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit">
+                Send Message →
+            </button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

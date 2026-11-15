@@ -1,0 +1,85 @@
+
+{% extends "base.html" %}
+
+{% block title %}Student Details | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">STUDENT RECORD</span>
+    <h1>Student Details</h1>
+    <p>Complete information about the registered student.</p>
+</section>
+
+<section class="dashboard-section">
+
+    <div class="student-details-card">
+
+        <div class="student-profile-heading">
+            <div class="student-avatar">🎓</div>
+            <div>
+                <h2>{{ student.name }}</h2>
+                <p>Student ID: <strong>{{ student.student_code }}</strong></p>
+            </div>
+        </div>
+
+        <div class="details-divider"></div>
+
+        <div class="details-grid">
+
+            <div class="detail-item">
+                <span>Student Name</span>
+                <strong>{{ student.name }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Student ID</span>
+                <strong>{{ student.student_code }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Qualification</span>
+                <strong>{{ student.qualification }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Coaching For</span>
+                <strong>{{ student.coaching_for }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Mobile Number</span>
+                <strong>{{ student.phone or 'Not Provided' }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Registration Date</span>
+                <strong>{{ student.created_at }}</strong>
+            </div>
+
+        </div>
+
+        <div class="details-actions">
+            <a href="{{ url_for('edit_student', student_id=student.id) }}"
+               class="btn btn-primary">
+                Edit Student
+            </a>
+
+            <form method="POST"
+                  action="{{ url_for('delete_student', student_id=student.id) }}"
+                  onsubmit="return confirm('Are you sure you want to delete this student?');">
+                <button type="submit" class="btn btn-danger">
+                    Delete Student
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <a href="{{ url_for('students') }}" class="back-link">
+        ← Back to Students
+    </a>
+
+</section>
+
+{% endblock %}

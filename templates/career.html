@@ -1,0 +1,52 @@
+
+{% extends "base.html" %}
+
+{% block title %}Career Guidance | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">PLAN YOUR FUTURE</span>
+    <h1>Career Guidance</h1>
+    <p>Ask your questions and take the right step towards your career.</p>
+</section>
+
+<section class="form-section">
+    <div class="form-card">
+        <div class="form-heading">
+            <div class="form-icon">🎯</div>
+            <h2>Ask Your Career Question</h2>
+            <p>Share your question. Our team will review it.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('career') }}">
+
+            <div class="form-group">
+                <label>Student Name *</label>
+                <input type="text" name="student_name"
+                       placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number or Email</label>
+                <input type="text" name="contact"
+                       placeholder="Enter your contact details">
+            </div>
+
+            <div class="form-group">
+                <label>Your Career Question *</label>
+                <textarea name="question"
+                          placeholder="Write your career-related question here..."
+                          required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit">
+                Submit Question →
+            </button>
+
+            <p class="form-note">* Required fields</p>
+        </form>
+    </div>
+</section>
+
+{% endblock %}
