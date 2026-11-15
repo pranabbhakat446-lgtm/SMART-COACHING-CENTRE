@@ -18,7 +18,7 @@
             <div class="dashboard-icon">🎓</div>
             <h3>Total Students</h3>
             <strong>{{ total_students }}</strong>
-            <a href="{{ url_for('students') }}">Manage Students →</a>
+            <a href="{{ url_for('admin_students') }}">Manage Students →</a>
         </div>
 
         <div class="dashboard-card">
@@ -32,14 +32,14 @@
             <div class="dashboard-icon">💬</div>
             <h3>Total Problems</h3>
             <strong>{{ total_problems }}</strong>
-            <a href="{{ url_for('problems') }}">Manage Problems →</a>
+            <a href="{{ url_for('admin_problems') }}">Manage Problems →</a>
         </div>
 
         <div class="dashboard-card">
             <div class="dashboard-icon">⏳</div>
             <h3>Pending Problems</h3>
             <strong>{{ pending_problems }}</strong>
-            <a href="{{ url_for('problems') }}">Check Pending →</a>
+            <a href="{{ url_for('admin_problems') }}">Check Pending →</a>
         </div>
 
     </div>
@@ -48,9 +48,9 @@
         <h2>Quick Actions</h2>
 
         <div class="action-links">
-            <a href="{{ url_for('students') }}">View All Students</a>
+            <a href="{{ url_for('admin_students') }}">View All Students</a>
             <a href="{{ url_for('career_requests') }}">Career Requests</a>
-            <a href="{{ url_for('problems') }}">Student Problems</a>
+           <a href="{{ url_for('admin_problems') }}">Student Problems</a>
             <a href="{{ url_for('contact_messages') }}">Contact Messages</a>
             <a href="{{ url_for('admin_logout') }}">Logout</a>
         </div>
