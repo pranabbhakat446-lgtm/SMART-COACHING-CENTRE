@@ -467,8 +467,8 @@ def contact_messages():
 
     return render_template("contact_messages.html", messages=messages)
 
+init_db()
+create_admin()
 
 if __name__ == "__main__":
-    init_db()
-    create_admin()
     app.run(debug=True)
