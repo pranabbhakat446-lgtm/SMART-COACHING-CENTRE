@@ -31,6 +31,9 @@
                 <label>Last Qualification *</label>
                 <select name="qualification" required>
                     <option value="">Select qualification</option>
+                    <option>Class 5</option>
+                    <option>Class 6</option>
+                    <option>Class 7</option>
                     <option>Class 8</option>
                     <option>Class 9</option>
                     <option>Class 10</option>
@@ -58,10 +61,16 @@
             </div>
 
             <div class="form-group">
-                <label>Mobile Number</label>
+                <label>Email Address *</label>
+                <input type="email" name="email"
+                       placeholder="Enter your email address" required>
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number *</label>
                 <input type="tel" name="phone"
                        placeholder="Enter mobile number"
-                       maxlength="15">
+                       maxlength="15" required>
             </div>
 
             <button type="submit" class="btn btn-primary form-submit">

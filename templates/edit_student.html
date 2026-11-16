@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label>Qualification *</label>
                 <select name="qualification" required>
-                    {% for item in ['Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12', 'Diploma', 'Graduation', 'Other'] %}
+                    {% for item in ['Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12', 'Diploma', 'Graduation', 'Other'] %}
                     <option value="{{ item }}"
                         {% if student.qualification == item %}selected{% endif %}>
                         {{ item }}
@@ -54,9 +54,17 @@
             </div>
 
             <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" name="email"
+                       value="{{ student.email or '' }}"
+                       placeholder="Enter email address" required>
+            </div>
+
+            <div class="form-group">
                 <label>Mobile Number</label>
                 <input type="tel" name="phone"
-                       value="{{ student.phone or '' }}">
+                       value="{{ student.phone or '' }}"
+                       maxlength="15">
             </div>
 
             <button type="submit" class="btn btn-primary form-submit">

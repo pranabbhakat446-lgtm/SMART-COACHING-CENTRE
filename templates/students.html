@@ -14,7 +14,7 @@
 <section class="dashboard-section">
 
     <div class="student-toolbar">
-      <form method="GET" action="{{ url_for('admin_students') }}" class="search-form">
+        <form method="GET" action="{{ url_for('admin_students') }}" class="search-form">
             <input type="text" name="search"
                    value="{{ search }}"
                    placeholder="Search by student name or ID...">
@@ -28,6 +28,7 @@
                 <tr>
                     <th>Student ID</th>
                     <th>Name</th>
+                    <th>Email</th>
                     <th>Qualification</th>
                     <th>Coaching For</th>
                     <th>Action</th>
@@ -39,6 +40,7 @@
                 <tr>
                     <td><strong>{{ student.student_code }}</strong></td>
                     <td>{{ student.name }}</td>
+                    <td>{{ student.email or "-" }}</td>
                     <td>{{ student.qualification }}</td>
                     <td>{{ student.coaching_for }}</td>
                     <td>
@@ -50,7 +52,7 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="5" class="empty-message">
+                    <td colspan="6" class="empty-message">
                         No students found.
                     </td>
                 </tr>
@@ -59,7 +61,7 @@
         </table>
     </div>
 
-    <a href="{{url_for('admin_dashboard') }}" class="back-link">
+    <a href="{{ url_for('admin_dashboard') }}" class="back-link">
         ← Back to Dashboard
     </a>
 

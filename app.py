@@ -1,6 +1,9 @@
 
+
 import os
+import smtplib
 from pathlib import Path
+from email.message import EmailMessage
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from dotenv import load_dotenv
@@ -62,22 +65,24 @@ def register():
         name = request.form.get("name", "").strip()
         qualification = request.form.get("qualification", "").strip()
         coaching_for = request.form.get("coaching_for", "").strip()
+        email = request.form.get("email", "").strip()
         phone = request.form.get("phone", "").strip()
 
-        if not name or not qualification or not coaching_for:
+        if not name or not qualification or not coaching_for or not email or not phone:
             flash("Please fill all required fields.", "error")
             return redirect(url_for("register"))
 
         conn = get_db()
+
         try:
             student = conn.execute(
                 """
                 INSERT INTO students
-                (name, qualification, coaching_for, phone)
-                VALUES (%s, %s, %s, %s)
+                (name, qualification, coaching_for, email, phone)
+                VALUES (%s, %s, %s, %s, %s)
                 RETURNING id
                 """,
-                (name, qualification, coaching_for, phone)
+                (name, qualification, coaching_for, email, phone)
             ).fetchone()
 
             student_id = student["id"]
@@ -87,18 +92,24 @@ def register():
                 "UPDATE students SET student_code = %s WHERE id = %s",
                 (student_code, student_id)
             )
+
             conn.commit()
+
+        except Exception:
+            conn.rollback()
+            raise
+
         finally:
             conn.close()
 
-        return render_template(
-            "success.html",
-            student_code=student_code,
-            name=name
-        )
+        # Send confirmation email after successful enrollment
+       return render_template(
+    "success.html",
+    student_code=student_code,
+    name=name
+)
 
     return render_template("register.html")
-
 
 @app.route("/career", methods=["GET", "POST"])
 def career():
@@ -325,21 +336,30 @@ def edit_student(student_id):
             name = request.form.get("name", "").strip()
             qualification = request.form.get("qualification", "").strip()
             coaching_for = request.form.get("coaching_for", "").strip()
+            email = request.form.get("email", "").strip()
             phone = request.form.get("phone", "").strip()
+
+            if not name or not qualification or not coaching_for or not email:
+                flash("Please fill all required fields.", "error")
+                return redirect(url_for("edit_student", student_id=student_id))
 
             conn.execute(
                 """
                 UPDATE students
-                SET name = %s, qualification = %s,
-                    coaching_for = %s, phone = %s
+                SET name = %s,
+                    qualification = %s,
+                    coaching_for = %s,
+                    email = %s,
+                    phone = %s
                 WHERE id = %s
                 """,
-                (name, qualification, coaching_for, phone, student_id)
+                (name, qualification, coaching_for, email, phone, student_id)
             )
             conn.commit()
 
             flash("Student details updated successfully.", "success")
             return redirect(url_for("student_details", student_id=student_id))
+
     finally:
         conn.close()
 
@@ -467,6 +487,7 @@ def contact_messages():
 
     return render_template("contact_messages.html", messages=messages)
 
+
 @app.route("/sitemap.xml")
 def sitemap():
     xml = """<?xml version="1.0" encoding="UTF-8"?>
@@ -480,8 +501,54 @@ def sitemap():
 </urlset>"""
 
     return app.response_class(xml, mimetype="application/xml")
+
+
 init_db()
 create_admin()
 
+def send_enrollment_email(name, email, student_code):
+    try:
+        mail_server = os.getenv("MAIL_SERVER", "smtp.gmail.com")
+        mail_port = int(os.getenv("MAIL_PORT", "587"))
+        mail_username = os.getenv("MAIL_USERNAME")
+        mail_password = os.getenv("MAIL_PASSWORD", "").replace(" ", "")
+
+        if not mail_username or not mail_password:
+            print("Email configuration missing in .env file.")
+            return False
+
+        msg = EmailMessage()
+        msg["Subject"] = "Enrollment Confirmation - Smart Coaching Centre"
+        msg["From"] = mail_username
+        msg["To"] = email
+
+        msg.set_content(f"""
+Dear {name},
+
+Congratulations!
+
+Your enrollment at Smart Coaching Centre has been successful.
+
+Your Student ID is: {student_code}
+
+Please save this Student ID for future reference.
+
+Thank you for choosing Smart Coaching Centre.
+
+Best Regards,
+Smart Coaching Centre
+""")
+
+        with smtplib.SMTP(mail_server, mail_port, timeout=20) as server:
+            server.starttls()
+            server.login(mail_username, mail_password)
+            server.send_message(msg)
+
+        print(f"Enrollment confirmation email sent to {email}")
+        return True
+
+    except Exception as e:
+        print("Email sending failed:", str(e))
+        return False
 if __name__ == "__main__":
     app.run(debug=True)
