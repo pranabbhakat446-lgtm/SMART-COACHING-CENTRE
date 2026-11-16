@@ -43,7 +43,7 @@
                     <td>{{ student.coaching_for }}</td>
                     <td>
                         <a class="view-link"
-                           href="{{url_for('admin_student_details', student_id=student.id) }}">
+                           href="{{ url_for('student_details', student_id=student.id) }}">
                             View Details
                         </a>
                     </td>
