@@ -14,7 +14,7 @@
 <section class="dashboard-section">
 
     <div class="student-toolbar">
-        <form method="GET" action="{{ url_for('students') }}" class="search-form">
+      <form method="GET" action="{{ url_for('admin_students') }}" class="search-form">
             <input type="text" name="search"
                    value="{{ search }}"
                    placeholder="Search by student name or ID...">
@@ -43,7 +43,7 @@
                     <td>{{ student.coaching_for }}</td>
                     <td>
                         <a class="view-link"
-                           href="{{ url_for('student_details', student_id=student.id) }}">
+                           href="{{url_for('admin_student_details', student_id=student.id) }}">
                             View Details
                         </a>
                     </td>
@@ -59,7 +59,7 @@
         </table>
     </div>
 
-    <a href="{{ url_for('dashboard') }}" class="back-link">
+    <a href="{{url_for('admin_dashboard') }}" class="back-link">
         ← Back to Dashboard
     </a>
 
