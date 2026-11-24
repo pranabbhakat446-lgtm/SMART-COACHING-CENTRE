@@ -102,15 +102,13 @@ def register():
         finally:
             conn.close()
 
-        # Send confirmation email after successful enrollment
-       return render_template(
-    "success.html",
-    student_code=student_code,
-    name=name
-)
-
+              # Send confirmation email after successful enrollment
+        return render_template(
+            "success.html",
+            student_code=student_code,
+            name=name
+        )
     return render_template("register.html")
-
 @app.route("/career", methods=["GET", "POST"])
 def career():
     if request.method == "POST":
