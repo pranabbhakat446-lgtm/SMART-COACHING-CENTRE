@@ -1,5 +1,4 @@
 
-
 import os
 import smtplib
 from pathlib import Path
@@ -75,6 +74,32 @@ def register():
         conn = get_db()
 
         try:
+            # Duplicate student check: same name and same mobile number.
+            # Spaces, hyphens and country code are ignored.
+            duplicate = conn.execute(
+                """
+                SELECT id
+                FROM students
+                WHERE LOWER(TRIM(name)) = LOWER(TRIM(%s))
+                  AND RIGHT(
+                        REGEXP_REPLACE(COALESCE(phone, ''), '[^0-9]', '', 'g'),
+                        10
+                  ) = RIGHT(
+                        REGEXP_REPLACE(%s, '[^0-9]', '', 'g'),
+                        10
+                  )
+                LIMIT 1
+                """,
+                (name, phone)
+            ).fetchone()
+
+            if duplicate:
+                flash(
+                    "This student is already registered with the same name and mobile number.",
+                    "error"
+                )
+                return redirect(url_for("register"))
+
             student = conn.execute(
                 """
                 INSERT INTO students
@@ -102,13 +127,16 @@ def register():
         finally:
             conn.close()
 
-              # Send confirmation email after successful enrollment
+        # Send confirmation email after successful enrollment
         return render_template(
             "success.html",
             student_code=student_code,
             name=name
         )
+
     return render_template("register.html")
+
+
 @app.route("/career", methods=["GET", "POST"])
 def career():
     if request.method == "POST":
@@ -341,6 +369,31 @@ def edit_student(student_id):
                 flash("Please fill all required fields.", "error")
                 return redirect(url_for("edit_student", student_id=student_id))
 
+            # Prevent editing a student into another existing duplicate.
+            duplicate = conn.execute(
+                """
+                SELECT id FROM students
+                WHERE id != %s
+                  AND LOWER(TRIM(name)) = LOWER(TRIM(%s))
+                  AND RIGHT(
+                        REGEXP_REPLACE(COALESCE(phone, ''), '[^0-9]', '', 'g'),
+                        10
+                  ) = RIGHT(
+                        REGEXP_REPLACE(%s, '[^0-9]', '', 'g'),
+                        10
+                  )
+                LIMIT 1
+                """,
+                (student_id, name, phone)
+            ).fetchone()
+
+            if duplicate:
+                flash(
+                    "Another student is already registered with the same name and mobile number.",
+                    "error"
+                )
+                return redirect(url_for("edit_student", student_id=student_id))
+
             conn.execute(
                 """
                 UPDATE students
@@ -504,6 +557,7 @@ def sitemap():
 init_db()
 create_admin()
 
+
 def send_enrollment_email(name, email, student_code):
     try:
         mail_server = os.getenv("MAIL_SERVER", "smtp.gmail.com")
@@ -548,5 +602,7 @@ Smart Coaching Centre
     except Exception as e:
         print("Email sending failed:", str(e))
         return False
+
+
 if __name__ == "__main__":
     app.run(debug=True)

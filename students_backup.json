@@ -1,0 +1,312 @@
+[
+    {
+        "id": 1,
+        "student_code": "01",
+        "name": "VIVEK BHAKAT",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "6206117221",
+        "created_at": "2026-11-15 17:45:00.583584",
+        "email": null
+    },
+    {
+        "id": 2,
+        "student_code": "02",
+        "name": "JAYDEEP BHAKAT",
+        "qualification": "Other",
+        "coaching_for": "School Tuition",
+        "phone": "9523640665",
+        "created_at": "2026-11-15 17:46:37.409858",
+        "email": null
+    },
+    {
+        "id": 3,
+        "student_code": "03",
+        "name": "Dhrub Bhakat",
+        "qualification": "Diploma",
+        "coaching_for": "Career Preparation",
+        "phone": "9523640665",
+        "created_at": "2026-11-16 06:02:49.826193",
+        "email": null
+    },
+    {
+        "id": 4,
+        "student_code": "04",
+        "name": "Dhrub Bhakat",
+        "qualification": "Diploma",
+        "coaching_for": "School Tuition",
+        "phone": "9523640665",
+        "created_at": "2026-11-16 10:54:30.651785",
+        "email": "pranabbhakat446@gmail.com"
+    },
+    {
+        "id": 5,
+        "student_code": "05",
+        "name": "Dhrub Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "Mathematics",
+        "phone": "9523640665",
+        "created_at": "2026-11-16 10:55:24.655428",
+        "email": "vivek1010bhakat@gmail.com"
+    },
+    {
+        "id": 6,
+        "student_code": "06",
+        "name": "Dhrub Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "Mathematics",
+        "phone": "9523640665",
+        "created_at": "2026-11-16 11:03:54.173034",
+        "email": null
+    },
+    {
+        "id": 7,
+        "student_code": "07",
+        "name": "DIPA KAIBARTA",
+        "qualification": "Other",
+        "coaching_for": "Competitive Examination",
+        "phone": "6203839610",
+        "created_at": "2026-11-16 11:07:15.342285",
+        "email": null
+    },
+    {
+        "id": 8,
+        "student_code": "08",
+        "name": "DEV KAIBARTA",
+        "qualification": "Other",
+        "coaching_for": "School Tuition",
+        "phone": "6203839610",
+        "created_at": "2026-11-16 11:08:01.862361",
+        "email": null
+    },
+    {
+        "id": 9,
+        "student_code": "09",
+        "name": "KUSUM MUNDA",
+        "qualification": "Class 8",
+        "coaching_for": "School Tuition",
+        "phone": "9931186773",
+        "created_at": "2026-11-16 11:09:32.506065",
+        "email": null
+    },
+    {
+        "id": 10,
+        "student_code": "10",
+        "name": "BIKRAMADITYA MAJHI",
+        "qualification": "Class 9",
+        "coaching_for": "School Tuition",
+        "phone": "8797676419",
+        "created_at": "2026-11-16 11:12:27.771313",
+        "email": null
+    },
+    {
+        "id": 11,
+        "student_code": "11",
+        "name": "KISHNO HEMBROM",
+        "qualification": "Other",
+        "coaching_for": "Competitive Examination",
+        "phone": "9122040643",
+        "created_at": "2026-11-16 11:13:42.901310",
+        "email": null
+    },
+    {
+        "id": 12,
+        "student_code": "12",
+        "name": "JYOTIKA BHAKAT",
+        "qualification": "Other",
+        "coaching_for": "School Tuition",
+        "phone": "7209533414",
+        "created_at": "2026-11-16 11:14:17.865200",
+        "email": null
+    },
+    {
+        "id": 13,
+        "student_code": "13",
+        "name": "NILESH BHAKAT",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "9234980233",
+        "created_at": "2026-11-16 11:15:29.666034",
+        "email": null
+    },
+    {
+        "id": 14,
+        "student_code": "14",
+        "name": "PURNIMA BHAKAT",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "7903012030",
+        "created_at": "2026-11-16 11:16:25.513474",
+        "email": null
+    },
+    {
+        "id": 15,
+        "student_code": "15",
+        "name": "SHRITI BHAKAT",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "7209300976",
+        "created_at": "2026-11-16 11:17:15.209833",
+        "email": null
+    },
+    {
+        "id": 16,
+        "student_code": "16",
+        "name": "Vivek Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "6206117221",
+        "created_at": "2026-11-16 11:18:13.226270",
+        "email": null
+    },
+    {
+        "id": 17,
+        "student_code": "17",
+        "name": "JAYDEEP BHAKAT",
+        "qualification": "Other",
+        "coaching_for": "School Tuition",
+        "phone": "9631380790",
+        "created_at": "2026-11-16 12:20:49.134741",
+        "email": null
+    },
+    {
+        "id": 18,
+        "student_code": "18",
+        "name": "BHASKAR BHAKAT",
+        "qualification": "Other",
+        "coaching_for": "School Tuition",
+        "phone": "8235131938",
+        "created_at": "2026-11-16 12:21:34.723048",
+        "email": null
+    },
+    {
+        "id": 19,
+        "student_code": "19",
+        "name": "Sagar Kaibarta",
+        "qualification": "Class 11",
+        "coaching_for": "School Tuition",
+        "phone": "6204439737",
+        "created_at": "2026-11-16 13:27:15.633416",
+        "email": null
+    },
+    {
+        "id": 20,
+        "student_code": "20",
+        "name": "Rohit Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "9608742042",
+        "created_at": "2026-11-16 13:29:03.363446",
+        "email": null
+    },
+    {
+        "id": 21,
+        "student_code": "21",
+        "name": "Dev Kumar Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "9508866430",
+        "created_at": "2026-11-16 13:30:08.373509",
+        "email": null
+    },
+    {
+        "id": 22,
+        "student_code": "22",
+        "name": "Dev Kumar Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "9508866430",
+        "created_at": "2026-11-16 13:30:10.835158",
+        "email": null
+    },
+    {
+        "id": 23,
+        "student_code": "23",
+        "name": "Dev Kumar Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "9508866430",
+        "created_at": "2026-11-16 13:30:13.522497",
+        "email": null
+    },
+    {
+        "id": 24,
+        "student_code": "24",
+        "name": "Supriya murmu",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "9508035219",
+        "created_at": "2026-11-16 13:31:41.678546",
+        "email": null
+    },
+    {
+        "id": 25,
+        "student_code": "25",
+        "name": "Bosumoti shee",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "8757050276",
+        "created_at": "2026-11-16 13:33:38.000963",
+        "email": null
+    },
+    {
+        "id": 26,
+        "student_code": "26",
+        "name": "Reshmi gope",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "9304997542",
+        "created_at": "2026-11-16 13:34:40.526352",
+        "email": null
+    },
+    {
+        "id": 27,
+        "student_code": "27",
+        "name": "Shilpa bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "7903537085",
+        "created_at": "2026-11-16 13:35:46.361062",
+        "email": null
+    },
+    {
+        "id": 28,
+        "student_code": "28",
+        "name": "Shilpa bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "7903537085",
+        "created_at": "2026-11-16 13:35:48.967220",
+        "email": null
+    },
+    {
+        "id": 29,
+        "student_code": "29",
+        "name": "Jayshree Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "9508042069",
+        "created_at": "2026-11-16 13:37:10.920437",
+        "email": null
+    },
+    {
+        "id": 30,
+        "student_code": "30",
+        "name": "Pakhi Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "7549598163",
+        "created_at": "2026-11-16 13:38:10.771683",
+        "email": null
+    },
+    {
+        "id": 31,
+        "student_code": "31",
+        "name": "Pakhi Bhakat",
+        "qualification": "Class 10",
+        "coaching_for": "School Tuition",
+        "phone": "7549598163",
+        "created_at": "2026-11-16 13:38:10.800223",
+        "email": null
+    }
+]
