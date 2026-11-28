@@ -1,0 +1,47 @@
+
+{% extends "base.html" %}
+
+{% block title %}Send Email Announcement - Smart Coaching Centre{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 750px; margin: 40px auto; padding: 25px;">
+
+    <h1>Send Email Announcement</h1>
+    <p>Send an announcement to students who subscribed to email updates.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div style="padding: 12px; margin: 12px 0; background: #e8f5e9; border-radius: 6px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('send_email_announcement') }}"
+          onsubmit="return confirm('Are you sure you want to send this announcement to all subscribers?');">
+
+        <label for="subject"><strong>Email Subject</strong></label>
+        <input type="text" id="subject" name="subject"
+               placeholder="Enter announcement subject"
+               maxlength="200" required
+               style="width:100%; padding:12px; margin:10px 0 20px;">
+
+        <label for="message"><strong>Announcement Message</strong></label>
+        <textarea id="message" name="message"
+                  placeholder="Write your announcement here..."
+                  rows="10" maxlength="10000" required
+                  style="width:100%; padding:12px; margin:10px 0 20px;"></textarea>
+
+        <button type="submit"
+                style="padding:12px 22px; background:#1769aa; color:white; border:0; border-radius:6px; cursor:pointer;">
+            Send Announcement
+        </button>
+
+        <a href="{{ url_for('admin_email_subscribers') }}"
+           style="margin-left:12px;">Back to Subscribers</a>
+
+    </form>
+</section>
+{% endblock %}

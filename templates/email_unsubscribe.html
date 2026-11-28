@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+
+{% block title %}Unsubscribe - Smart Coaching Centre{% endblock %}
+
+{% block content %}
+<section style="max-width:600px; margin:50px auto; padding:30px; text-align:center;">
+
+    <h1>Email Unsubscribe</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div style="padding:15px; margin:15px 0; background:#e8f5e9; border-radius:8px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if unsubscribe_available %}
+        <p>Do you want to stop receiving email announcements from Smart Coaching Centre?</p>
+
+        <form method="POST">
+            <button type="submit"
+                    style="padding:12px 22px; background:#c62828; color:white; border:0; border-radius:6px; cursor:pointer;">
+                Confirm Unsubscribe
+            </button>
+        </form>
+    {% else %}
+        <p>Your unsubscribe request has been processed or the link is invalid.</p>
+    {% endif %}
+
+    <p style="margin-top:25px;">
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </p>
+
+</section>
+{% endblock %}

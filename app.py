@@ -7,17 +7,25 @@ from email.message import EmailMessage
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from itsdangerous import URLSafeSerializer, BadSignature
 from database import get_db, init_db
+
 
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
+
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
 if not app.secret_key:
     raise RuntimeError("SECRET_KEY .env file mein set kijiye.")
+
+
+unsubscribe_serializer = URLSafeSerializer(
+    app.secret_key,
+    salt="email-unsubscribe"
+)
 
 
 def create_admin():
@@ -28,6 +36,7 @@ def create_admin():
         raise RuntimeError("ADMIN_USERNAME aur ADMIN_PASSWORD .env mein set kijiye.")
 
     conn = get_db()
+
     try:
         existing = conn.execute(
             "SELECT id FROM admin WHERE username = %s",
@@ -40,6 +49,7 @@ def create_admin():
                 (username, generate_password_hash(password))
             )
             conn.commit()
+
     finally:
         conn.close()
 
@@ -137,6 +147,87 @@ def register():
     return render_template("register.html")
 
 
+@app.route("/api/student-by-email")
+def student_by_email():
+    email = request.args.get("email", "").strip().lower()
+
+    if not email:
+        return {"found": False}
+
+    conn = get_db()
+
+    try:
+        student = conn.execute(
+            """
+            SELECT name
+            FROM students
+            WHERE LOWER(TRIM(email)) = %s
+            LIMIT 1
+            """,
+            (email,)
+        ).fetchone()
+
+        if student:
+            return {
+                "found": True,
+                "name": student["name"]
+            }
+
+        return {"found": False}
+
+    finally:
+        conn.close()
+
+
+@app.route("/collect-email", methods=["GET", "POST"])
+def collect_email():
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        consent = request.form.get("consent")
+
+        if not email or consent != "yes":
+            flash("Please enter your email and provide consent.", "error")
+            return redirect(url_for("collect_email"))
+
+        conn = get_db()
+
+        try:
+            subscriber = conn.execute(
+                """
+                INSERT INTO email_subscribers (name, email, consent)
+                VALUES (%s, %s, %s)
+                ON CONFLICT (email) DO NOTHING
+                RETURNING id
+                """,
+                (name or None, email, True)
+            ).fetchone()
+
+            conn.commit()
+
+            if subscriber:
+                flash(
+                    "Thank you! Your email has been subscribed successfully.",
+                    "success"
+                )
+            else:
+                flash(
+                    "This email address is already subscribed.",
+                    "error"
+                )
+
+        except Exception:
+            conn.rollback()
+            raise
+
+        finally:
+            conn.close()
+
+        return redirect(url_for("collect_email"))
+
+    return render_template("collect_email.html")
+
+
 @app.route("/career", methods=["GET", "POST"])
 def career():
     if request.method == "POST":
@@ -149,6 +240,7 @@ def career():
             return redirect(url_for("career"))
 
         conn = get_db()
+
         try:
             conn.execute(
                 """
@@ -159,6 +251,7 @@ def career():
                 (student_name, contact, question)
             )
             conn.commit()
+
         finally:
             conn.close()
 
@@ -181,6 +274,7 @@ def problem():
             return redirect(url_for("problem"))
 
         conn = get_db()
+
         try:
             conn.execute(
                 """
@@ -191,6 +285,7 @@ def problem():
                 (student_name, student_code, category, message)
             )
             conn.commit()
+
         finally:
             conn.close()
 
@@ -213,6 +308,7 @@ def contact():
             return redirect(url_for("contact"))
 
         conn = get_db()
+
         try:
             conn.execute(
                 """
@@ -223,6 +319,7 @@ def contact():
                 (name, phone, email, message)
             )
             conn.commit()
+
         finally:
             conn.close()
 
@@ -239,11 +336,13 @@ def admin_login():
         password = request.form.get("password", "")
 
         conn = get_db()
+
         try:
             admin = conn.execute(
                 "SELECT * FROM admin WHERE username = %s",
                 (username,)
             ).fetchone()
+
         finally:
             conn.close()
 
@@ -269,6 +368,7 @@ def admin_dashboard():
         return redirect(url_for("admin_login"))
 
     conn = get_db()
+
     try:
         students_count = conn.execute(
             "SELECT COUNT(*) AS total FROM students"
@@ -286,6 +386,7 @@ def admin_dashboard():
             "SELECT COUNT(*) AS total FROM problems WHERE status = %s",
             ("Pending",)
         ).fetchone()["total"]
+
     finally:
         conn.close()
 
@@ -306,6 +407,7 @@ def admin_students():
     search = request.args.get("search", "").strip()
 
     conn = get_db()
+
     try:
         students = conn.execute(
             """
@@ -315,10 +417,15 @@ def admin_students():
             """,
             (f"%{search}%", f"%{search}%")
         ).fetchall()
+
     finally:
         conn.close()
 
-    return render_template("students.html", students=students, search=search)
+    return render_template(
+        "students.html",
+        students=students,
+        search=search
+    )
 
 
 @app.route("/admin/student/<int:student_id>")
@@ -327,11 +434,13 @@ def student_details(student_id):
         return redirect(url_for("admin_login"))
 
     conn = get_db()
+
     try:
         student = conn.execute(
             "SELECT * FROM students WHERE id = %s",
             (student_id,)
         ).fetchone()
+
     finally:
         conn.close()
 
@@ -348,6 +457,7 @@ def edit_student(student_id):
         return redirect(url_for("admin_login"))
 
     conn = get_db()
+
     try:
         student = conn.execute(
             "SELECT * FROM students WHERE id = %s",
@@ -367,7 +477,9 @@ def edit_student(student_id):
 
             if not name or not qualification or not coaching_for or not email:
                 flash("Please fill all required fields.", "error")
-                return redirect(url_for("edit_student", student_id=student_id))
+                return redirect(
+                    url_for("edit_student", student_id=student_id)
+                )
 
             # Prevent editing a student into another existing duplicate.
             duplicate = conn.execute(
@@ -392,7 +504,9 @@ def edit_student(student_id):
                     "Another student is already registered with the same name and mobile number.",
                     "error"
                 )
-                return redirect(url_for("edit_student", student_id=student_id))
+                return redirect(
+                    url_for("edit_student", student_id=student_id)
+                )
 
             conn.execute(
                 """
@@ -409,13 +523,14 @@ def edit_student(student_id):
             conn.commit()
 
             flash("Student details updated successfully.", "success")
-            return redirect(url_for("student_details", student_id=student_id))
+            return redirect(
+                url_for("student_details", student_id=student_id)
+            )
 
     finally:
         conn.close()
 
     return render_template("edit_student.html", student=student)
-
 
 @app.route("/admin/delete-student/<int:student_id>", methods=["POST"])
 def delete_student(student_id):
@@ -423,12 +538,14 @@ def delete_student(student_id):
         return redirect(url_for("admin_login"))
 
     conn = get_db()
+
     try:
         conn.execute(
             "DELETE FROM students WHERE id = %s",
             (student_id,)
         )
         conn.commit()
+
     finally:
         conn.close()
 
@@ -442,14 +559,19 @@ def career_requests():
         return redirect(url_for("admin_login"))
 
     conn = get_db()
+
     try:
         requests_list = conn.execute(
             "SELECT * FROM career_requests ORDER BY id DESC"
         ).fetchall()
+
     finally:
         conn.close()
 
-    return render_template("career_requests.html", requests=requests_list)
+    return render_template(
+        "career_requests.html",
+        requests=requests_list
+    )
 
 
 @app.route("/admin/problems")
@@ -458,14 +580,19 @@ def admin_problems():
         return redirect(url_for("admin_login"))
 
     conn = get_db()
+
     try:
         problems_list = conn.execute(
             "SELECT * FROM problems ORDER BY id DESC"
         ).fetchall()
+
     finally:
         conn.close()
 
-    return render_template("problems.html", problems=problems_list)
+    return render_template(
+        "problems.html",
+        problems=problems_list
+    )
 
 
 @app.route("/admin/update-problem/<int:problem_id>", methods=["POST"])
@@ -480,6 +607,7 @@ def update_problem(problem_id):
         status = "Pending"
 
     conn = get_db()
+
     try:
         conn.execute(
             """
@@ -490,6 +618,7 @@ def update_problem(problem_id):
             (status, admin_reply, problem_id)
         )
         conn.commit()
+
     finally:
         conn.close()
 
@@ -506,6 +635,7 @@ def reply_career(request_id):
     status = request.form.get("status", "Pending")
 
     conn = get_db()
+
     try:
         conn.execute(
             """
@@ -516,6 +646,7 @@ def reply_career(request_id):
             (response, status, request_id)
         )
         conn.commit()
+
     finally:
         conn.close()
 
@@ -529,14 +660,235 @@ def contact_messages():
         return redirect(url_for("admin_login"))
 
     conn = get_db()
+
     try:
         messages = conn.execute(
             "SELECT * FROM contact_messages ORDER BY id DESC"
         ).fetchall()
+
     finally:
         conn.close()
 
-    return render_template("contact_messages.html", messages=messages)
+    return render_template(
+        "contact_messages.html",
+        messages=messages
+    )
+
+
+@app.route("/admin/email-subscribers")
+def admin_email_subscribers():
+    if not admin_required():
+        return redirect(url_for("admin_login"))
+
+    conn = get_db()
+
+    try:
+        subscribers = conn.execute(
+            """
+            SELECT id, name, email, created_at
+            FROM email_subscribers
+            ORDER BY created_at DESC
+            """
+        ).fetchall()
+
+        total_subscribers = len(subscribers)
+
+    finally:
+        conn.close()
+
+    return render_template(
+        "email_subscribers.html",
+        subscribers=subscribers,
+        total_subscribers=total_subscribers
+    )
+
+
+# UPDATED EMAIL ANNOUNCEMENT ROUTE
+@app.route("/admin/send-announcement", methods=["GET", "POST"])
+def send_email_announcement():
+    if not admin_required():
+        return redirect(url_for("admin_login"))
+
+    if request.method == "GET":
+        return render_template("email_announcement.html")
+
+    subject = request.form.get("subject", "").strip()
+    message = request.form.get("message", "").strip()
+
+    if not subject or not message:
+        flash("Please enter both subject and message.", "error")
+        return redirect(url_for("send_email_announcement"))
+
+    conn = get_db()
+
+    try:
+        subscribers = conn.execute(
+            """
+            SELECT name, email
+            FROM email_subscribers
+            WHERE consent = TRUE
+              AND email IS NOT NULL
+              AND TRIM(email) <> ''
+            ORDER BY id
+            """
+        ).fetchall()
+
+    finally:
+        conn.close()
+
+    if not subscribers:
+        flash("No email subscribers found.", "warning")
+        return redirect(url_for("send_email_announcement"))
+
+    mail_server = os.getenv("MAIL_SERVER", "smtp.gmail.com")
+    mail_port = int(os.getenv("MAIL_PORT", "587"))
+    mail_username = os.getenv("MAIL_USERNAME")
+    mail_password = os.getenv("MAIL_PASSWORD", "").replace(" ", "")
+
+    if not mail_username or not mail_password:
+        flash("Gmail configuration is missing.", "error")
+        return redirect(url_for("send_email_announcement"))
+
+    sent_count = 0
+    failed_count = 0
+
+    try:
+        with smtplib.SMTP(mail_server, mail_port, timeout=30) as server:
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login(mail_username, mail_password)
+
+            for subscriber in subscribers:
+                recipient = subscriber["email"].strip().lower()
+                name = subscriber["name"] or "Student"
+
+                # Generate a unique unsubscribe token for each subscriber
+                unsubscribe_token = unsubscribe_serializer.dumps({
+                    "email": recipient
+                })
+
+                unsubscribe_url = url_for(
+                    "unsubscribe_email",
+                    token=unsubscribe_token,
+                    _external=True
+                )
+
+                email_msg = EmailMessage()
+                email_msg["Subject"] = subject
+                email_msg["From"] = mail_username
+                email_msg["To"] = recipient
+
+                email_msg["List-Unsubscribe"] = f"<{unsubscribe_url}>"
+
+                email_msg.set_content(
+                    f"""Dear {name},
+
+{message}
+
+Regards,
+Smart Coaching Centre
+
+--------------------------------
+To stop receiving email announcements,
+unsubscribe here:
+
+{unsubscribe_url}
+"""
+                )
+
+                try:
+                    server.send_message(email_msg)
+                    sent_count += 1
+                    print(f"Announcement sent to {recipient}")
+
+                except Exception as e:
+                    failed_count += 1
+                    print(
+                        f"Announcement failed for {recipient}: {e}"
+                    )
+
+        flash(
+            f"Announcement completed! Sent: {sent_count}, Failed: {failed_count}",
+            "success" if failed_count == 0 else "warning"
+        )
+
+    except Exception as e:
+        print("Announcement SMTP error:", str(e))
+        flash(
+            "Email sending failed. Please check Gmail configuration.",
+            "error"
+        )
+
+    return redirect(url_for("send_email_announcement"))
+
+
+# EMAIL UNSUBSCRIBE ROUTE
+@app.route("/unsubscribe/<token>", methods=["GET", "POST"])
+def unsubscribe_email(token):
+    try:
+        data = unsubscribe_serializer.loads(token)
+        email = data.get("email", "").strip().lower()
+
+        if not email:
+            raise BadSignature("Invalid email token")
+
+    except (BadSignature, AttributeError):
+        return render_template(
+            "email_unsubscribe.html",
+            unsubscribe_available=False
+        )
+
+    conn = get_db()
+
+    try:
+        if request.method == "POST":
+            result = conn.execute(
+                """
+                UPDATE email_subscribers
+                SET consent = FALSE
+                WHERE LOWER(TRIM(email)) = %s
+                  AND consent = TRUE
+                RETURNING id
+                """,
+                (email,)
+            ).fetchone()
+
+            conn.commit()
+
+            if result:
+                flash(
+                    "You have successfully unsubscribed.",
+                    "success"
+                )
+            else:
+                flash(
+                    "This email is already unsubscribed.",
+                    "info"
+                )
+
+            return render_template(
+                "email_unsubscribe.html",
+                unsubscribe_available=False
+            )
+
+        subscriber = conn.execute(
+            """
+            SELECT id
+            FROM email_subscribers
+            WHERE LOWER(TRIM(email)) = %s
+              AND consent = TRUE
+            """,
+            (email,)
+        ).fetchone()
+
+        return render_template(
+            "email_unsubscribe.html",
+            unsubscribe_available=bool(subscriber)
+        )
+
+    finally:
+        conn.close()
 
 
 @app.route("/sitemap.xml")
@@ -554,6 +906,7 @@ def sitemap():
     return app.response_class(xml, mimetype="application/xml")
 
 
+# Initialize database and admin
 init_db()
 create_admin()
 

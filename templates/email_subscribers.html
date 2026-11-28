@@ -1,0 +1,73 @@
+
+{% extends "base.html" %}
+
+{% block title %}Email Subscribers | Smart Coaching Centre{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <span class="section-tag">ADMIN PANEL</span>
+    <h1>Email Subscribers</h1>
+    <p>Manage students who have subscribed to email updates.</p>
+</section>
+
+<section class="dashboard-section">
+
+    <div class="dashboard-card">
+        <div class="dashboard-icon">📧</div>
+        <h3>Total Email Subscribers</h3>
+        <strong>{{ total_subscribers }}</strong>
+    </div>
+
+    <div class="dashboard-actions">
+        <h2>Subscriber List</h2>
+
+        {% if subscribers %}
+
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+
+                <thead>
+                    <tr>
+                        <th style="padding: 12px; text-align: left;">ID</th>
+                        <th style="padding: 12px; text-align: left;">Student Name</th>
+                        <th style="padding: 12px; text-align: left;">Email Address</th>
+                        <th style="padding: 12px; text-align: left;">Subscription Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for subscriber in subscribers %}
+                    <tr>
+                        <td style="padding: 12px;">{{ subscriber.id }}</td>
+                        <td style="padding: 12px;">
+                            {{ subscriber.name or "Name not provided" }}
+                        </td>
+                        <td style="padding: 12px;">{{ subscriber.email }}</td>
+                        <td style="padding: 12px;">
+                            {{ subscriber.created_at.strftime('%d-%m-%Y') if subscriber.created_at else 'N/A' }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        {% else %}
+
+        <p style="margin-top: 20px;">
+            No email subscribers found.
+        </p>
+
+        {% endif %}
+
+        <div class="action-links" style="margin-top: 25px;">
+            <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
